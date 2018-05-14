@@ -25,6 +25,29 @@ class MovingCartView (ctx : Context) : View(ctx) {
         }
         return true
     }
+
+    data class State (var prevScale : Float = 0f, var dir : Float = 0f, var j : Int = 0) {
+
+        private val scales : Array<Float> = arrayOf(0f, 0f, 0f)
+
+        fun update(stopcb : (Float) -> Unit) {
+            scales[this.j] += 0.1f * this.dir
+            if (Math.abs(this.scales[this.j] - this.prevScale) > 1) {
+                this.scales[this.j] = this.prevScale + this.dir
+                this.j += this.dir.toInt()
+                if (this.j == this.scales.size || this.j == -1) {
+
+                }
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            if (this.dir == 0f) {
+                this.dir = 1 - 2 * prevScale
+                startcb()
+            }
+        }
+    }
 }
 
 
