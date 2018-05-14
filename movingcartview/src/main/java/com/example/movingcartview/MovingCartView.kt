@@ -4,6 +4,7 @@ package com.example.movingcartview
  * Created by anweshmishra on 15/05/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.content.*
@@ -142,6 +143,14 @@ class MovingCartView (ctx : Context) : View(ctx) {
             movingCart.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : MovingCartView {
+            val view : MovingCartView = MovingCartView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
