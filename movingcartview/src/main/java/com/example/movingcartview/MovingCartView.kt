@@ -39,7 +39,10 @@ class MovingCartView (ctx : Context) : View(ctx) {
                 this.scales[this.j] = this.prevScale + this.dir
                 this.j += this.dir.toInt()
                 if (this.j == this.scales.size || this.j == -1) {
-
+                    this.j -= this.dir.toInt()
+                    this.prevScale = this.scales[this.j]
+                    this.dir = 0f
+                    stopcb(this.prevScale)
                 }
             }
         }
@@ -87,26 +90,26 @@ class MovingCartView (ctx : Context) : View(ctx) {
             val h : Float = canvas.height.toFloat()
             paint.strokeWidth = Math.min(w, h) / 75
             paint.strokeCap = Paint.Cap.ROUND
-            val hSize : Float = h/3
+            val hSize : Float = h/6
             val wSize : Float = w/2 - w/10
-            val r : Float = Math.min(w, h)/10
+            val r : Float = Math.min(w, h)/22
             paint.color = Color.parseColor("#BDBDBD")
             canvas.save()
             canvas.translate(w/2 * this.state.scales[1], h/2)
-            canvas.drawLine(w/10, -h/6, w/10, h/6, paint)
-            canvas.drawLine(0f, -h/6, w/10, -h/6, paint)
+            canvas.drawLine(w/10, -hSize, w/10, hSize, paint)
+            canvas.drawLine(0f, -hSize, w/10, -hSize, paint)
             canvas.save()
-            canvas.translate(wSize/2, h/6 + r)
+            canvas.translate(w / 10 + wSize / 2, hSize + r)
             for (i in 0..1) {
-                canvas.drawCircle(0.4f * w * (1 - 2 * i), 0f, r, paint)
+                canvas.drawCircle(0.4f * wSize * (1 - 2 * i), 0f, r, paint)
             }
             canvas.restore()
-
+            canvas.drawLine(w/10, hSize, w/10 + wSize, hSize, paint)
             canvas.save()
-            canvas.translate(0f, -h/8 + (h/6 - h/8) * (1 - state.scales[0]))
-            canvas.drawRect(RectF(0f, 0f, 2 * wSize/3, h/4), paint)
+            canvas.translate(w/10 , -hSize * 0.8f + (hSize - h/5  + hSize * 0.8f) * (1 - state.scales[0]))
+            canvas.drawRect(RectF(0f, 0f, 2 * wSize/3, h/5), paint)
             val path : Path = Path()
-            path.moveTo(2 * wSize/3, h/4)
+            path.moveTo(2 * wSize/3, h/5)
             path.lineTo(wSize, 0f)
             path.lineTo(2 * wSize/3, 0f)
             canvas.drawPath(path, paint)
