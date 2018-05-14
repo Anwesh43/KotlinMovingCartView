@@ -120,6 +120,28 @@ class MovingCartView (ctx : Context) : View(ctx) {
         }
     }
 
+    data class Renderer(var view : MovingCartView) {
+
+        val animator : Animator = Animator(view)
+
+        val movingCart : MovingCart = MovingCart(0)
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            movingCart.draw(canvas, paint)
+            animator.animate {
+                movingCart.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            movingCart.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
 
 
